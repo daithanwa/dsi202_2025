@@ -84,3 +84,9 @@ docker compose up --build
 ```bash
 Frontend: http://localhost:8000
 ```
+
+---
+
+## 🎬 วิดีโอการใช้งานเว็บ
+
+https://youtu.be/ey8TOd02nZ8?si=4o-jT07PNTGaYqMR
