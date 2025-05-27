@@ -1,0 +1,62 @@
+{% extends 'myapp/base.html' %}
+{% load myapp_filters %}
+{% block title %}ดำเนินการสั่งซื้อ - CareME{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-12 pt-24 px-4">
+  <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">ดำเนินการสั่งซื้อ</h1>
+
+  {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %}
+        <div class="p-4 rounded-lg {{ message.tags }}">
+          <p>{{ message }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if cart and items %}
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300 uppercase">สินค้า</th>
+            <th class="px-6 py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-300 uppercase">จำนวน</th>
+            <th class="px-6 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-300 uppercase">ราคารวม</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          {% for item in items %}
+          <tr>
+            <td class="px-6 py-4">{{ item.product.name }}</td>
+            <td class="px-6 py-4 text-center">{{ item.quantity }}</td>
+            <td class="px-6 py-4 text-right">฿{{ item.price|floatformat:2|multiply:item.quantity }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="flex justify-between items-center px-6 py-4 bg-gray-50 dark:bg-gray-700">
+        <span class="text-lg font-semibold text-gray-700 dark:text-white">ยอดรวมทั้งหมด</span>
+        <span class="text-xl font-bold text-mint">฿{{ cart.total_amount|floatformat:2 }}</span>
+      </div>
+    </div>
+
+    <form method="post" class="mt-6 text-center">
+      {% csrf_token %}
+      <button type="submit" class="bg-mint hover:bg-teal-500 text-white text-lg font-semibold py-3 px-8 rounded-xl shadow-lg transition">
+        ยืนยันการสั่งซื้อ
+      </button>
+    </form>
+  {% else %}
+    <div class="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+      <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-3">ไม่มีสินค้าในตะกร้า</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-8">กรุณาเพิ่มสินค้าในตะกร้าก่อนดำเนินการสั่งซื้อ</p>
+      <a href="{% url 'product_list' %}" class="py-3 px-8 bg-gradient-to-r from-mint to-teal text-white rounded-full font-bold hover:shadow-lg transition">
+        เลือกซื้อสินค้า
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
