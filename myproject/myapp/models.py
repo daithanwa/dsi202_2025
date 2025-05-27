@@ -12,6 +12,8 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    category = models.CharField(max_length=100, blank=True, null=True)  # <-- ต้องมีทั้งสองตัว
+
     
     def __str__(self):
         return self.name
@@ -79,7 +81,10 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     order_number = models.CharField(max_length=20, unique=True, null=True, blank=True)
-    
+    shipping_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    tracking_number = models.CharField(max_length=100, unique=True, default='TEMP')
+
+
     def __str__(self):
         return f"คำสั่งซื้อ #{self.id} - {self.user.username}"
         

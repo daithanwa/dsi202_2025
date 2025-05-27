@@ -24,6 +24,7 @@ from django.http import HttpResponse
 from django.core.files.base import ContentFile
 from .models import Order
 from collections import defaultdict
+from decimal import Decimal
 import base64
 
 # In views.py, update the register function:
@@ -159,7 +160,9 @@ def add_to_cart(request, product_id):
     order, created = Order.objects.get_or_create(
         user=request.user,
         status='pending',
-        defaults={'total_amount': 0}
+        defaults={'total_amount': 0,
+                  'shipping_fee': 0,
+                  'tracking_number': 'TEMP' }
     )
     
     # If order was just created, set initial total_amount
